@@ -7,7 +7,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, join_room, leave_room, send
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "nigga"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "fallback_secret_key")
 socketio = SocketIO(app)
 
 rooms = {}
@@ -82,7 +82,7 @@ def connect(auth):
     name = session.get("name")
     if not room or not name:
         return
-    if room not in room:
+    if room not in rooms:
         leave_room(room)
         return
 
